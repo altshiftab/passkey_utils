@@ -1,0 +1,5 @@
+module github.com/altshiftab/passkeys_utils
+
+go 1.24.0
+
+require github.com/Motmedel/utils_go v0.0.225
