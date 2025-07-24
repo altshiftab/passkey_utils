@@ -24,7 +24,7 @@ func (t *TransportPublicKeyCredential[T]) MakePublicKeyCredential() (*public_key
 
 	response := t.Response
 	switch transportAuthenticatorResponse := any(response).(type) {
-	case transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse:
+	case *transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse:
 		var err error
 		authenticatorResponse, err = transportAuthenticatorResponse.MakeAuthenticatorResponse()
 		if err != nil {
@@ -33,7 +33,7 @@ func (t *TransportPublicKeyCredential[T]) MakePublicKeyCredential() (*public_key
 				transportAuthenticatorResponse,
 			)
 		}
-	case transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse:
+	case *transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse:
 		var err error
 		authenticatorResponse, err = transportAuthenticatorResponse.MakeAuthenticatorResponse()
 		if err != nil {

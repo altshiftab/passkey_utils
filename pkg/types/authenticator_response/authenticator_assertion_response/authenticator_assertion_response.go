@@ -15,3 +15,7 @@ type AuthenticatorAssertionResponse struct {
 func (a *AuthenticatorAssertionResponse) GetClientDataJson() *collected_client_data.CollectedClientData {
 	return a.ClientDataJson
 }
+
+func (a *AuthenticatorAssertionResponse) GetAuthenticatorData() *authenticator_data.AuthenticatorData {
+	return a.AuthenticatorData
+}

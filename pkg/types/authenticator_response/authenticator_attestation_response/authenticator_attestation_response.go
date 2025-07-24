@@ -18,3 +18,7 @@ type AuthenticatorAttestationResponse struct {
 func (a *AuthenticatorAttestationResponse) GetClientDataJson() *collected_client_data.CollectedClientData {
 	return a.ClientDataJson
 }
+
+func (a *AuthenticatorAttestationResponse) GetAuthenticatorData() *authenticator_data.AuthenticatorData {
+	return a.AuthenticatorData
+}

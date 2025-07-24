@@ -5,6 +5,12 @@ import (
 	"errors"
 )
 
+const (
+	minAuthenticatorDataLength = 37
+	aaguidLength               = 16
+	credentialIdMinSize        = 2
+)
+
 type AttestedCredentialData struct {
 	Aaguid       []byte
 	CredentialId []byte
@@ -22,13 +28,7 @@ type AuthenticatorData struct {
 // TODO: Fix errors
 
 func FromBytes(data []byte) (*AuthenticatorData, error) {
-	const (
-		minAuthDataLength   = 37 // Minimum length: RP ID Hash (32) + Flags (1) + Signature Counter (4)
-		aaguidLength        = 16 // Length of the AAGUID (16 bytes)
-		credentialIdMinSize = 2  // Minimum 2 bytes for Credential ID Length (variable)
-	)
-
-	if len(data) < minAuthDataLength {
+	if len(data) < minAuthenticatorDataLength {
 		return nil, errors.New("authenticator data is too short")
 	}
 
