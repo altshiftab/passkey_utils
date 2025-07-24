@@ -1,8 +1,8 @@
 package authenticator_attestation_response
 
 import (
-	"github.com/altshiftab/passkeys_utils/pkg/types/authenticator_data"
-	"github.com/altshiftab/passkeys_utils/pkg/types/collected_client_data"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_data"
+	"github.com/altshiftab/passkey_utils/pkg/types/collected_client_data"
 )
 
 type AuthenticatorAttestationResponse struct {

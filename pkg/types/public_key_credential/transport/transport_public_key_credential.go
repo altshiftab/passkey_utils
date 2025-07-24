@@ -3,12 +3,12 @@ package transport
 import (
 	"fmt"
 	motmedelErrors "github.com/Motmedel/utils_go/pkg/errors"
-	passkeyUtilsErrors "github.com/altshiftab/passkeys_utils/pkg/errors"
-	"github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response"
-	transportAuthenticatorAssertionResponse "github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response/authenticator_assertion_response/transport"
-	transportAuthenticatorAttestationResponse "github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response/authenticator_attestation_response/transport"
-	"github.com/altshiftab/passkeys_utils/pkg/types/public_key_credential"
-	"github.com/altshiftab/passkeys_utils/pkg/utils/transport"
+	passkeyUtilsErrors "github.com/altshiftab/passkey_utils/pkg/errors"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response"
+	transportAuthenticatorAssertionResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_assertion_response/transport"
+	transportAuthenticatorAttestationResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response/transport"
+	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential"
+	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
 type TransportPublicKeyCredential[T transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse | transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse] struct {

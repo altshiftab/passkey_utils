@@ -1,4 +1,4 @@
-module github.com/altshiftab/passkeys_utils
+module github.com/altshiftab/passkey_utils
 
 go 1.24.0
 

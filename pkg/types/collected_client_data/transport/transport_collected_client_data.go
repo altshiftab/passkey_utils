@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	motmedelErrors "github.com/Motmedel/utils_go/pkg/errors"
-	"github.com/altshiftab/passkeys_utils/pkg/utils/transport"
+	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
 type TransportCollectedClientData struct {

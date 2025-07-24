@@ -2,11 +2,11 @@ package transport
 
 import (
 	"fmt"
-	"github.com/altshiftab/passkeys_utils/pkg/types/authenticator_data"
-	"github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response/authenticator_assertion_response"
-	"github.com/altshiftab/passkeys_utils/pkg/types/collected_client_data"
-	transportCollectedClientData "github.com/altshiftab/passkeys_utils/pkg/types/collected_client_data/transport"
-	"github.com/altshiftab/passkeys_utils/pkg/utils/transport"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_data"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_assertion_response"
+	"github.com/altshiftab/passkey_utils/pkg/types/collected_client_data"
+	transportCollectedClientData "github.com/altshiftab/passkey_utils/pkg/types/collected_client_data/transport"
+	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
 // TODO: Add JSON schema notations.

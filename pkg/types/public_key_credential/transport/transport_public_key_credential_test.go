@@ -3,8 +3,8 @@ package transport
 import (
 	"encoding/json"
 	"fmt"
-	transportAuthenticatorAssertionResponse "github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response/authenticator_assertion_response/transport"
-	transportAuthenticatorAttestationResponse "github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response/authenticator_attestation_response/transport"
+	transportAuthenticatorAssertionResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_assertion_response/transport"
+	transportAuthenticatorAttestationResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response/transport"
 	"testing"
 )
 
@@ -41,7 +41,6 @@ func TestUnmarshalAssertionTransportPublicKeyCredential(t *testing.T) {
 	}
 
 	fmt.Printf("challenge := %#v\n", k.Response.GetClientDataJson().Challenge)
-
 
 }
 

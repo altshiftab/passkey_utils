@@ -1,8 +1,8 @@
 package public_key_credential_creation_options
 
 import (
-	"github.com/altshiftab/passkeys_utils/pkg/types/public_key_credential_descriptor"
-	"github.com/altshiftab/passkeys_utils/pkg/types/public_key_credential_entity/public_key_credential_user_entity"
+	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential_descriptor"
+	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential_entity/public_key_credential_user_entity"
 )
 
 type PublicKeyCredentialCreationOptions struct {

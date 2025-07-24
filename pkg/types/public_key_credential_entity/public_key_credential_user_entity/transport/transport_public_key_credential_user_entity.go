@@ -1,6 +1,6 @@
 package transport
 
-import "github.com/altshiftab/passkeys_utils/pkg/utils/transport"
+import "github.com/altshiftab/passkey_utils/pkg/utils/transport"
 
 // TODO Add JSON schema attributes.
 

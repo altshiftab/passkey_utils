@@ -3,19 +3,19 @@ package transport
 import (
 	"fmt"
 	motmedelErrors "github.com/Motmedel/utils_go/pkg/errors"
-	"github.com/altshiftab/passkeys_utils/pkg/types/authenticator_data"
-	"github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response/authenticator_attestation_response"
-	"github.com/altshiftab/passkeys_utils/pkg/types/collected_client_data"
-	transportCollectedClientData "github.com/altshiftab/passkeys_utils/pkg/types/collected_client_data/transport"
-	"github.com/altshiftab/passkeys_utils/pkg/utils/transport"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_data"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response"
+	"github.com/altshiftab/passkey_utils/pkg/types/collected_client_data"
+	transportCollectedClientData "github.com/altshiftab/passkey_utils/pkg/types/collected_client_data/transport"
+	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
 // TODO: Add JSON schema notations.
 
 type TransportAuthenticatorAttestationResponse struct {
-	ClientDataJson transport.Base64URL `json:"clientDataJSON,omitempty"`
-	Transports     []string            `json:"transports,omitempty"`
-	AuthenticatorData transport.Base64URL `json:"authenticatorData,omitempty"`
+	ClientDataJson     transport.Base64URL `json:"clientDataJSON,omitempty"`
+	Transports         []string            `json:"transports,omitempty"`
+	AuthenticatorData  transport.Base64URL `json:"authenticatorData,omitempty"`
 	AttestationObject  transport.Base64URL `json:"attestationObject,omitempty"`
 	PublicKey          transport.Base64URL `json:"publicKey,omitempty"`
 	PublicKeyAlgorithm int                 `json:"publicKeyAlgorithm,omitempty"`
@@ -48,7 +48,7 @@ func (t *TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() 
 			TopOrigin:   collectedClientData.TopOrigin,
 		},
 		Transports:         t.Transports,
-		AuthenticatorData: authenticatorData,
+		AuthenticatorData:  authenticatorData,
 		AttestationObject:  t.AttestationObject,
 		PublicKey:          t.PublicKey,
 		PublicKeyAlgorithm: t.PublicKeyAlgorithm,

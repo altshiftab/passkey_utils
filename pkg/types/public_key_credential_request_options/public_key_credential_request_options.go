@@ -1,7 +1,7 @@
 package public_key_credential_request_options
 
 import (
-	"github.com/altshiftab/passkeys_utils/pkg/types/public_key_credential_descriptor"
+	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential_descriptor"
 )
 
 type PublicKeyCredentialRequestOptions struct {

@@ -1,7 +1,7 @@
 package public_key_credential
 
 import (
-	"github.com/altshiftab/passkeys_utils/pkg/types/authenticator_response"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response"
 )
 
 type PublicKeyCredential struct {
