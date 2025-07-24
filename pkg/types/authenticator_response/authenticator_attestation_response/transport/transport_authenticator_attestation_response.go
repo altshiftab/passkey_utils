@@ -21,6 +21,14 @@ type TransportAuthenticatorAttestationResponse struct {
 	PublicKeyAlgorithm int                 `json:"publicKeyAlgorithm,omitempty"`
 }
 
+func (t *TransportAuthenticatorAttestationResponse) GetClientDataJson() []byte {
+	return t.ClientDataJson
+}
+
+func (t *TransportAuthenticatorAttestationResponse) GetAuthenticatorData() []byte {
+	return t.AuthenticatorData
+}
+
 func (t *TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() (*authenticator_attestation_response.AuthenticatorAttestationResponse, error) {
 	clientDataJson := t.ClientDataJson
 	collectedClientData, err := transportCollectedClientData.FromBytes(clientDataJson)

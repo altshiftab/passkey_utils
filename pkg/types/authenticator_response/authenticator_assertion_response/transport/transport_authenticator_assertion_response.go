@@ -18,6 +18,14 @@ type TransportAuthenticatorAssertionResponse struct {
 	UserHandle        transport.Base64URL `json:"userHandle,omitempty"`
 }
 
+func (t *TransportAuthenticatorAssertionResponse) GetClientDataJson() []byte {
+	return t.ClientDataJson
+}
+
+func (t *TransportAuthenticatorAssertionResponse) GetAuthenticatorData() []byte {
+	return t.AuthenticatorData
+}
+
 func (t *TransportAuthenticatorAssertionResponse) MakeAuthenticatorResponse() (*authenticator_assertion_response.AuthenticatorAssertionResponse, error) {
 	collectedClientData, err := transportCollectedClientData.FromBytes(t.ClientDataJson)
 	if err != nil {

@@ -9,3 +9,8 @@ type AuthenticatorResponse interface {
 	GetClientDataJson() *collected_client_data.CollectedClientData
 	GetAuthenticatorData() *authenticator_data.AuthenticatorData
 }
+
+type TransportAuthenticatorResponse interface {
+	GetClientDataJson() []byte
+	GetAuthenticatorData() []byte
+}
