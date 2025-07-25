@@ -18,15 +18,15 @@ type TransportAuthenticatorAssertionResponse struct {
 	UserHandle        transport.Base64URL `json:"userHandle,omitempty"`
 }
 
-func (t *TransportAuthenticatorAssertionResponse) GetClientDataJson() []byte {
+func (t TransportAuthenticatorAssertionResponse) GetClientDataJson() []byte {
 	return t.ClientDataJson
 }
 
-func (t *TransportAuthenticatorAssertionResponse) GetAuthenticatorData() []byte {
+func (t TransportAuthenticatorAssertionResponse) GetAuthenticatorData() []byte {
 	return t.AuthenticatorData
 }
 
-func (t *TransportAuthenticatorAssertionResponse) MakeAuthenticatorResponse() (*authenticator_assertion_response.AuthenticatorAssertionResponse, error) {
+func (t TransportAuthenticatorAssertionResponse) MakeAuthenticatorResponse() (*authenticator_assertion_response.AuthenticatorAssertionResponse, error) {
 	collectedClientData, err := transportCollectedClientData.FromBytes(t.ClientDataJson)
 	if err != nil {
 		return nil, fmt.Errorf("transport collected client data from bytes: %w", err)
@@ -38,14 +38,14 @@ func (t *TransportAuthenticatorAssertionResponse) MakeAuthenticatorResponse() (*
 	}
 
 	return &authenticator_assertion_response.AuthenticatorAssertionResponse{
-		ClientDataJson: &collected_client_data.CollectedClientData{
+		ClientDataJson: collected_client_data.CollectedClientData{
 			Type:        collectedClientData.Type,
 			Challenge:   collectedClientData.Challenge,
 			Origin:      collectedClientData.Origin,
 			CrossOrigin: collectedClientData.CrossOrigin,
 			TopOrigin:   collectedClientData.TopOrigin,
 		},
-		AuthenticatorData: authenticatorData,
+		AuthenticatorData: *authenticatorData,
 		Signature:         t.Signature,
 		UserHandle:        t.UserHandle,
 	}, nil

@@ -9,6 +9,7 @@ import (
 	motmedelErrors "github.com/Motmedel/utils_go/pkg/errors"
 	passkeyUtilsErrors "github.com/altshiftab/passkey_utils/pkg/errors"
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_data"
+	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response"
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_assertion_response"
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response"
 	"github.com/altshiftab/passkey_utils/pkg/types/collected_client_data"
@@ -23,8 +24,13 @@ const (
 	ExpectedCredentialType = "public-key"
 )
 
-func validatePublicKeyCredential(
-	credential *public_key_credential.PublicKeyCredential,
+type authenticatorResponseTypes interface {
+	authenticator_response.AuthenticatorResponse
+	authenticator_attestation_response.AuthenticatorAttestationResponse | authenticator_assertion_response.AuthenticatorAssertionResponse
+}
+
+func validatePublicKeyCredential[T authenticatorResponseTypes](
+	credential *public_key_credential.PublicKeyCredential[T],
 	expectedCollectedClientDataType string,
 	expectedCollectedClientDataChallenge []byte,
 	expectedCollectedClientDataOrigin string,
@@ -79,15 +85,6 @@ func validatePublicKeyCredential(
 	}
 
 	response := credential.Response
-	if response == nil {
-		return motmedelErrors.New(
-			fmt.Errorf(
-				"%w: %w",
-				motmedelErrors.ErrValidationError,
-				passkeyUtilsErrors.ErrNilCredentialResponse,
-			),
-		)
-	}
 
 	collectedClientData := response.GetClientDataJson()
 	if collectedClientData == nil {
@@ -136,7 +133,7 @@ func validatePublicKeyCredential(
 }
 
 func ValidateAttestationPublicKeyCredential(
-	credential *public_key_credential.PublicKeyCredential,
+	credential *public_key_credential.PublicKeyCredential[authenticator_attestation_response.AuthenticatorAttestationResponse],
 	expectedCollectedClientDataChallenge []byte,
 	expectedCollectedClientDataOrigin string,
 	expectedRpId string,
@@ -166,22 +163,6 @@ func ValidateAttestationPublicKeyCredential(
 		)
 	}
 
-	credentialResponse := credential.Response
-	authenticatorAttestationResponse, ok := credentialResponse.(*authenticator_attestation_response.AuthenticatorAttestationResponse)
-	if !ok {
-		return motmedelErrors.NewWithTrace(
-			fmt.Errorf("%w: %T", motmedelErrors.ErrConversionNotOk, credentialResponse),
-			credentialResponse,
-		)
-	}
-	if authenticatorAttestationResponse == nil {
-		return fmt.Errorf(
-			"%w: %w",
-			motmedelErrors.ErrValidationError,
-			passkeyUtilsErrors.ErrNilCredentialResponse,
-		)
-	}
-
 	err := validatePublicKeyCredential(
 		credential,
 		WebauthnCreateType,
@@ -195,7 +176,9 @@ func ValidateAttestationPublicKeyCredential(
 		return fmt.Errorf("validate public key credential: %w", err)
 	}
 
-	if len(authenticatorAttestationResponse.PublicKey) == 0 {
+	response := credential.Response
+
+	if len(response.PublicKey) == 0 {
 		return fmt.Errorf(
 			"%w: %w (authenticator attestation response)",
 			motmedelErrors.ErrValidationError,
@@ -203,7 +186,7 @@ func ValidateAttestationPublicKeyCredential(
 		)
 	}
 
-	if len(authenticatorAttestationResponse.Transports) == 0 {
+	if len(response.Transports) == 0 {
 		return fmt.Errorf(
 			"%w: %w",
 			motmedelErrors.ErrValidationError,
@@ -211,7 +194,7 @@ func ValidateAttestationPublicKeyCredential(
 		)
 	}
 
-	observedPublicKeyAlgorithm := authenticatorAttestationResponse.PublicKeyAlgorithm
+	observedPublicKeyAlgorithm := response.PublicKeyAlgorithm
 	if !slices.Contains(allowedPublicKeyAlgorithms, observedPublicKeyAlgorithm) {
 		return motmedelErrors.New(
 			fmt.Errorf(
@@ -229,7 +212,7 @@ func ValidateAttestationPublicKeyCredential(
 }
 
 func ValidateEcdsaAssertionPublicKeyCredential(
-	credential *public_key_credential.PublicKeyCredential,
+	credential *public_key_credential.PublicKeyCredential[authenticator_assertion_response.AuthenticatorAssertionResponse],
 	rawClientDataJson []byte,
 	rawAuthenticatorData []byte,
 	expectedCollectedClientDataChallenge []byte,
@@ -278,22 +261,6 @@ func ValidateEcdsaAssertionPublicKeyCredential(
 		)
 	}
 
-	credentialResponse := credential.Response
-	authenticatorAssertionResponse, ok := credentialResponse.(*authenticator_assertion_response.AuthenticatorAssertionResponse)
-	if !ok {
-		return motmedelErrors.NewWithTrace(
-			fmt.Errorf("%w: %T", motmedelErrors.ErrConversionNotOk, credentialResponse),
-			credentialResponse,
-		)
-	}
-	if authenticatorAssertionResponse == nil {
-		return fmt.Errorf(
-			"%w: %w",
-			motmedelErrors.ErrValidationError,
-			passkeyUtilsErrors.ErrNilCredentialResponse,
-		)
-	}
-
 	err := validatePublicKeyCredential(
 		credential,
 		WebauthnGetType,
@@ -307,7 +274,9 @@ func ValidateEcdsaAssertionPublicKeyCredential(
 		return fmt.Errorf("validate public key credential: %w", err)
 	}
 
-	signature := authenticatorAssertionResponse.Signature
+	response := credential.Response
+
+	signature := response.Signature
 	if len(signature) == 0 {
 		return fmt.Errorf(
 			"%w: %w",
@@ -316,7 +285,7 @@ func ValidateEcdsaAssertionPublicKeyCredential(
 		)
 	}
 
-	if len(authenticatorAssertionResponse.UserHandle) == 0 {
+	if len(response.UserHandle) == 0 {
 		return fmt.Errorf(
 			"%w: %w",
 			motmedelErrors.ErrValidationError,

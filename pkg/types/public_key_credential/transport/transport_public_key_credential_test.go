@@ -35,13 +35,12 @@ func TestUnmarshalAssertionTransportPublicKeyCredential(t *testing.T) {
 	fmt.Printf("rawClientDataJson := %#v\n", transportPublicKeyCredential.Response.ClientDataJson)
 	fmt.Printf("rawAuthenticatorData := %#v\n", transportPublicKeyCredential.Response.AuthenticatorData)
 
-	k, err := transportPublicKeyCredential.MakePublicKeyCredential()
+	k, err := MakeAssertionPublicKeyCredential(transportPublicKeyCredential)
 	if err != nil {
 		t.Error(err)
 	}
 
 	fmt.Printf("challenge := %#v\n", k.Response.GetClientDataJson().Challenge)
-
 }
 
 func TestUnmarshalAttestationTransportPublicKeyCredential(t *testing.T) {
@@ -73,7 +72,7 @@ func TestUnmarshalAttestationTransportPublicKeyCredential(t *testing.T) {
 		t.Error(err)
 	}
 
-	_, err = transportPublicKeyCredential.MakePublicKeyCredential()
+	_, err = MakeAttestationPublicKeyCredential(transportPublicKeyCredential)
 	if err != nil {
 		t.Error(err)
 	}

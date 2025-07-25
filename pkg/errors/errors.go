@@ -5,7 +5,6 @@ import (
 )
 
 var (
-	ErrUnexpectedAuthenticatorResponseType = errors.New("unexpected authenticator response type")
 	ErrEmptyCredentialId        = errors.New("empty credential id")
 	ErrNilAuthenticatorData     = errors.New("nil authenticator data")
 	ErrRpIdHashMismatch         = errors.New("rp id hash mismatch")
@@ -17,8 +16,6 @@ var (
 	ErrEmptyAaguid              = errors.New("empty aaguid")
 
 	ErrNilPublicKeyCredential = errors.New("nil public key credential")
-	ErrNilTransportPublicKeyCredential = errors.New("nil transport public key credential")
-	ErrNilCredentialResponse  = errors.New("nil credential response")
 	ErrNilCollectedClientData = errors.New("nil collected client data")
 	ErrEmptyExpectedCollectedClientDataType = errors.New("empty expected collected client data type")
 	ErrEmptyChallenge = errors.New("empty challenge")
@@ -38,5 +35,4 @@ var (
 	ErrEmptyUserHandle = errors.New("empty user handle")
 	ErrSignatureVerifyFailure = errors.New("signature verify failure")
 	ErrEmptyRpIdHash = errors.New("empty rp id hash")
-
 )

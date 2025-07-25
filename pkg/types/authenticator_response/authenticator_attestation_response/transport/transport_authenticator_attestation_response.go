@@ -21,15 +21,15 @@ type TransportAuthenticatorAttestationResponse struct {
 	PublicKeyAlgorithm int                 `json:"publicKeyAlgorithm,omitempty"`
 }
 
-func (t *TransportAuthenticatorAttestationResponse) GetClientDataJson() []byte {
+func (t TransportAuthenticatorAttestationResponse) GetClientDataJson() []byte {
 	return t.ClientDataJson
 }
 
-func (t *TransportAuthenticatorAttestationResponse) GetAuthenticatorData() []byte {
+func (t TransportAuthenticatorAttestationResponse) GetAuthenticatorData() []byte {
 	return t.AuthenticatorData
 }
 
-func (t *TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() (*authenticator_attestation_response.AuthenticatorAttestationResponse, error) {
+func (t TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() (*authenticator_attestation_response.AuthenticatorAttestationResponse, error) {
 	clientDataJson := t.ClientDataJson
 	collectedClientData, err := transportCollectedClientData.FromBytes(clientDataJson)
 	if err != nil {
@@ -48,7 +48,7 @@ func (t *TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() 
 	}
 
 	return &authenticator_attestation_response.AuthenticatorAttestationResponse{
-		ClientDataJson: &collected_client_data.CollectedClientData{
+		ClientDataJson: collected_client_data.CollectedClientData{
 			Type:        collectedClientData.Type,
 			Challenge:   collectedClientData.Challenge,
 			Origin:      collectedClientData.Origin,
@@ -56,7 +56,7 @@ func (t *TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() 
 			TopOrigin:   collectedClientData.TopOrigin,
 		},
 		Transports:         t.Transports,
-		AuthenticatorData:  authenticatorData,
+		AuthenticatorData:  *authenticatorData,
 		AttestationObject:  t.AttestationObject,
 		PublicKey:          t.PublicKey,
 		PublicKeyAlgorithm: t.PublicKeyAlgorithm,

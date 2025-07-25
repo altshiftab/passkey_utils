@@ -6,16 +6,16 @@ import (
 )
 
 type AuthenticatorAssertionResponse struct {
-	ClientDataJson    *collected_client_data.CollectedClientData
-	AuthenticatorData *authenticator_data.AuthenticatorData
+	ClientDataJson    collected_client_data.CollectedClientData
+	AuthenticatorData authenticator_data.AuthenticatorData
 	Signature         []byte
 	UserHandle        []byte
 }
 
-func (a *AuthenticatorAssertionResponse) GetClientDataJson() *collected_client_data.CollectedClientData {
-	return a.ClientDataJson
+func (a AuthenticatorAssertionResponse) GetClientDataJson() *collected_client_data.CollectedClientData {
+	return &a.ClientDataJson
 }
 
-func (a *AuthenticatorAssertionResponse) GetAuthenticatorData() *authenticator_data.AuthenticatorData {
-	return a.AuthenticatorData
+func (a AuthenticatorAssertionResponse) GetAuthenticatorData() *authenticator_data.AuthenticatorData {
+	return &a.AuthenticatorData
 }
