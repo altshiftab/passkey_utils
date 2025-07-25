@@ -20,8 +20,11 @@ type TransportPublicKeyCredential[T transportAuthenticatorAttestationResponse.Tr
 }
 
 func MakeAttestationPublicKeyCredential(
-	transportCredential TransportPublicKeyCredential[transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse],
+	transportCredential *TransportPublicKeyCredential[transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse],
 ) (*public_key_credential.PublicKeyCredential[authenticator_attestation_response.AuthenticatorAttestationResponse], error) {
+	if transportCredential == nil {
+		return nil, nil
+	}
 
 	transportResponse := transportCredential.Response
 	authenticatorResponse, err := transportResponse.MakeAuthenticatorResponse()
@@ -42,8 +45,11 @@ func MakeAttestationPublicKeyCredential(
 }
 
 func MakeAssertionPublicKeyCredential(
-	transportCredential TransportPublicKeyCredential[transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse],
+	transportCredential *TransportPublicKeyCredential[transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse],
 ) (*public_key_credential.PublicKeyCredential[authenticator_assertion_response.AuthenticatorAssertionResponse], error) {
+	if transportCredential == nil {
+		return nil, nil
+	}
 
 	transportResponse := transportCredential.Response
 	authenticatorResponse, err := transportResponse.MakeAuthenticatorResponse()
