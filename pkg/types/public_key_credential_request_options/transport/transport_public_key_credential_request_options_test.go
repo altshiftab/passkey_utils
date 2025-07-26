@@ -13,7 +13,7 @@ func TestUnmarshalTransportPublicKeyCredentialRequestOptions(t *testing.T) {
 		}
 	`
 
-	var transportPublicKeyCredentialRequestOptions TransportPublicKeyCredentialRequestOptions
+	var transportPublicKeyCredentialRequestOptions PublicKeyCredentialRequestOptions
 
 	err := json.Unmarshal([]byte(input), &transportPublicKeyCredentialRequestOptions)
 	if err != nil {

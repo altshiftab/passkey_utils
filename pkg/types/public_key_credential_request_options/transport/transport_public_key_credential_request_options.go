@@ -5,7 +5,7 @@ import (
 	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
-type TransportPublicKeyCredentialRequestOptions struct {
+type PublicKeyCredentialRequestOptions struct {
 	Challenge          transport.Base64URL                                               `json:"challenge"`
 	Timeout            uint64                                                            `json:"timeout,omitempty"`
 	RpId               string                                                            `json:"rpId,omitempty"`

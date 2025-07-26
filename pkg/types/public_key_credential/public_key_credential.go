@@ -5,6 +5,9 @@ import (
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response"
 )
 
+type AssertionPublicKeyCredential = PublicKeyCredential[authenticator_assertion_response.AuthenticatorAssertionResponse]
+type AttestationPublicKeyCredential = PublicKeyCredential[authenticator_attestation_response.AuthenticatorAttestationResponse]
+
 type PublicKeyCredential[T authenticator_attestation_response.AuthenticatorAttestationResponse | authenticator_assertion_response.AuthenticatorAssertionResponse] struct {
 	Id              []byte
 	Type            string

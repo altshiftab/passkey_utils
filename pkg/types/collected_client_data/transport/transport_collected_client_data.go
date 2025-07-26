@@ -7,7 +7,7 @@ import (
 	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
-type TransportCollectedClientData struct {
+type CollectedClientData struct {
 	Type        string              `json:"type,omitempty"`
 	Challenge   transport.Base64URL `json:"challenge,omitempty"`
 	Origin      string              `json:"origin,omitempty"`
@@ -15,12 +15,12 @@ type TransportCollectedClientData struct {
 	TopOrigin   string              `json:"topOrigin,omitempty"`
 }
 
-func FromBytes(data []byte) (*TransportCollectedClientData, error) {
+func FromBytes(data []byte) (*CollectedClientData, error) {
 	if len(data) == 0 {
 		return nil, nil
 	}
 
-	var transportCollectedClientData TransportCollectedClientData
+	var transportCollectedClientData CollectedClientData
 	if err := json.Unmarshal(data, &transportCollectedClientData); err != nil {
 		return nil, motmedelErrors.NewWithTrace(fmt.Errorf("json unmarshal: %w", err))
 	}

@@ -3,8 +3,6 @@ package transport
 import (
 	"encoding/json"
 	"fmt"
-	transportAuthenticatorAssertionResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_assertion_response/transport"
-	transportAuthenticatorAttestationResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response/transport"
 	"testing"
 )
 
@@ -25,7 +23,7 @@ func TestUnmarshalAssertionTransportPublicKeyCredential(t *testing.T) {
 		}
 	`
 
-	var transportPublicKeyCredential TransportPublicKeyCredential[transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse]
+	var transportPublicKeyCredential AssertionPublicKeyCredential
 
 	err := json.Unmarshal([]byte(input), &transportPublicKeyCredential)
 	if err != nil {
@@ -35,7 +33,7 @@ func TestUnmarshalAssertionTransportPublicKeyCredential(t *testing.T) {
 	fmt.Printf("rawClientDataJson := %#v\n", transportPublicKeyCredential.Response.ClientDataJson)
 	fmt.Printf("rawAuthenticatorData := %#v\n", transportPublicKeyCredential.Response.AuthenticatorData)
 
-	k, err := MakeAssertionPublicKeyCredential(transportPublicKeyCredential)
+	k, err := MakeAssertionPublicKeyCredential(&transportPublicKeyCredential)
 	if err != nil {
 		t.Error(err)
 	}
@@ -65,14 +63,14 @@ func TestUnmarshalAttestationTransportPublicKeyCredential(t *testing.T) {
 		}
 	`
 
-	var transportPublicKeyCredential TransportPublicKeyCredential[transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse]
+	var transportPublicKeyCredential AttestationPublicKeyCredential
 
 	err := json.Unmarshal([]byte(input), &transportPublicKeyCredential)
 	if err != nil {
 		t.Error(err)
 	}
 
-	_, err = MakeAttestationPublicKeyCredential(transportPublicKeyCredential)
+	_, err = MakeAttestationPublicKeyCredential(&transportPublicKeyCredential)
 	if err != nil {
 		t.Error(err)
 	}

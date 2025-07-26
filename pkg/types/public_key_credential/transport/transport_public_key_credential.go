@@ -3,15 +3,16 @@ package transport
 import (
 	"fmt"
 	motmedelErrors "github.com/Motmedel/utils_go/pkg/errors"
-	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_assertion_response"
 	transportAuthenticatorAssertionResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_assertion_response/transport"
-	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response"
 	transportAuthenticatorAttestationResponse "github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response/transport"
 	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential"
 	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
-type TransportPublicKeyCredential[T transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse | transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse] struct {
+type AssertionPublicKeyCredential = PublicKeyCredential[transportAuthenticatorAssertionResponse.AuthenticatorAssertionResponse]
+type AttestationPublicKeyCredential = PublicKeyCredential[transportAuthenticatorAttestationResponse.AuthenticatorAttestationResponse]
+
+type PublicKeyCredential[T transportAuthenticatorAttestationResponse.AuthenticatorAttestationResponse | transportAuthenticatorAssertionResponse.AuthenticatorAssertionResponse] struct {
 	Id              transport.Base64URL `json:"id,omitempty"`
 	Type            string              `json:"type,omitempty"`
 	RawId           transport.Base64URL `json:"rawId,omitempty"`
@@ -20,8 +21,8 @@ type TransportPublicKeyCredential[T transportAuthenticatorAttestationResponse.Tr
 }
 
 func MakeAttestationPublicKeyCredential(
-	transportCredential *TransportPublicKeyCredential[transportAuthenticatorAttestationResponse.TransportAuthenticatorAttestationResponse],
-) (*public_key_credential.PublicKeyCredential[authenticator_attestation_response.AuthenticatorAttestationResponse], error) {
+	transportCredential *AttestationPublicKeyCredential,
+) (*public_key_credential.AttestationPublicKeyCredential, error) {
 	if transportCredential == nil {
 		return nil, nil
 	}
@@ -35,7 +36,7 @@ func MakeAttestationPublicKeyCredential(
 		)
 	}
 
-	return &public_key_credential.PublicKeyCredential[authenticator_attestation_response.AuthenticatorAttestationResponse]{
+	return &public_key_credential.AttestationPublicKeyCredential{
 		Id:              transportCredential.Id,
 		Type:            transportCredential.Type,
 		RawId:           transportCredential.RawId,
@@ -45,8 +46,8 @@ func MakeAttestationPublicKeyCredential(
 }
 
 func MakeAssertionPublicKeyCredential(
-	transportCredential *TransportPublicKeyCredential[transportAuthenticatorAssertionResponse.TransportAuthenticatorAssertionResponse],
-) (*public_key_credential.PublicKeyCredential[authenticator_assertion_response.AuthenticatorAssertionResponse], error) {
+	transportCredential *AssertionPublicKeyCredential,
+) (*public_key_credential.AssertionPublicKeyCredential, error) {
 	if transportCredential == nil {
 		return nil, nil
 	}
@@ -60,7 +61,7 @@ func MakeAssertionPublicKeyCredential(
 		)
 	}
 
-	return &public_key_credential.PublicKeyCredential[authenticator_assertion_response.AuthenticatorAssertionResponse]{
+	return &public_key_credential.AssertionPublicKeyCredential{
 		Id:              transportCredential.Id,
 		Type:            transportCredential.Type,
 		RawId:           transportCredential.RawId,

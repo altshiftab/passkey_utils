@@ -3,6 +3,7 @@ package transport
 import (
 	"fmt"
 	motmedelErrors "github.com/Motmedel/utils_go/pkg/errors"
+	"github.com/altshiftab/passkey_utils/pkg/errors"
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_data"
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response"
 	"github.com/altshiftab/passkey_utils/pkg/types/collected_client_data"
@@ -12,7 +13,7 @@ import (
 
 // TODO: Add JSON schema notations.
 
-type TransportAuthenticatorAttestationResponse struct {
+type AuthenticatorAttestationResponse struct {
 	ClientDataJson     transport.Base64URL `json:"clientDataJSON,omitempty"`
 	Transports         []string            `json:"transports,omitempty"`
 	AuthenticatorData  transport.Base64URL `json:"authenticatorData,omitempty"`
@@ -21,15 +22,15 @@ type TransportAuthenticatorAttestationResponse struct {
 	PublicKeyAlgorithm int                 `json:"publicKeyAlgorithm,omitempty"`
 }
 
-func (t TransportAuthenticatorAttestationResponse) GetClientDataJson() []byte {
+func (t AuthenticatorAttestationResponse) GetClientDataJson() []byte {
 	return t.ClientDataJson
 }
 
-func (t TransportAuthenticatorAttestationResponse) GetAuthenticatorData() []byte {
+func (t AuthenticatorAttestationResponse) GetAuthenticatorData() []byte {
 	return t.AuthenticatorData
 }
 
-func (t TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() (*authenticator_attestation_response.AuthenticatorAttestationResponse, error) {
+func (t AuthenticatorAttestationResponse) MakeAuthenticatorResponse() (*authenticator_attestation_response.AuthenticatorAttestationResponse, error) {
 	clientDataJson := t.ClientDataJson
 	collectedClientData, err := transportCollectedClientData.FromBytes(clientDataJson)
 	if err != nil {
@@ -38,6 +39,10 @@ func (t TransportAuthenticatorAttestationResponse) MakeAuthenticatorResponse() (
 			clientDataJson,
 		)
 	}
+	if collectedClientData == nil {
+		return nil, motmedelErrors.NewWithTrace(errors.ErrNilCollectedClientData)
+	}
+
 	rawAuthenticatorData := t.AuthenticatorData
 	authenticatorData, err := authenticator_data.FromBytes(rawAuthenticatorData)
 	if err != nil {

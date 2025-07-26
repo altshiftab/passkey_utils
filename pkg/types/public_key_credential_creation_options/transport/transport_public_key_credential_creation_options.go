@@ -7,9 +7,9 @@ import (
 	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
-type TransportPublicKeyCredentialCreationOptions struct {
-	RelyingParty *public_key_credential_creation_options.RelayingParty                          `json:"rp"`
-	User         *transportPublicKeyCredentialUserEntity.TransportPublicKeyCredentialUserEntity `json:"user"`
+type PublicKeyCredentialCreationOptions struct {
+	RelyingParty *public_key_credential_creation_options.RelayingParty                 `json:"rp"`
+	User         *transportPublicKeyCredentialUserEntity.PublicKeyCredentialUserEntity `json:"user"`
 
 	Challenge        transport.Base64URL                                                `json:"challenge"`
 	PubKeyCredParams []*public_key_credential_creation_options.PublicKeyCredentialParam `json:"pubKeyCredParams"`
