@@ -133,7 +133,7 @@ func validatePublicKeyCredential[T authenticatorResponseTypes](
 }
 
 func ValidateAttestationPublicKeyCredential(
-	credential *public_key_credential.PublicKeyCredential[authenticator_attestation_response.AuthenticatorAttestationResponse],
+	credential *public_key_credential.AttestationPublicKeyCredential,
 	expectedCollectedClientDataChallenge []byte,
 	expectedCollectedClientDataOrigin string,
 	expectedRpId string,
@@ -212,7 +212,7 @@ func ValidateAttestationPublicKeyCredential(
 }
 
 func ValidateEcdsaAssertionPublicKeyCredential(
-	credential *public_key_credential.PublicKeyCredential[authenticator_assertion_response.AuthenticatorAssertionResponse],
+	credential *public_key_credential.AssertionPublicKeyCredential,
 	rawClientDataJson []byte,
 	rawAuthenticatorData []byte,
 	expectedCollectedClientDataChallenge []byte,
@@ -301,7 +301,7 @@ func ValidateEcdsaAssertionPublicKeyCredential(
 	if err != nil {
 		return motmedelErrors.New(
 			fmt.Errorf(
-				"%w (signature): %w",
+				"%w (signature): asn1 unmarshal %w",
 				motmedelErrors.ErrValidationError,
 				err,
 			),
