@@ -14,6 +14,7 @@ var (
 	ErrNilAttestedCredential    = errors.New("nil attested credential")
 	ErrEmptyPublicKey           = errors.New("empty public key")
 	ErrEmptyAaguid              = errors.New("empty aaguid")
+	ErrNilUserEntity            = errors.New("nil user entity")
 
 	ErrNilPublicKeyCredential = errors.New("nil public key credential")
 	ErrNilCollectedClientData = errors.New("nil collected client data")
