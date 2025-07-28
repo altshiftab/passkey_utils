@@ -13,11 +13,11 @@ type AssertionPublicKeyCredential = PublicKeyCredential[transportAuthenticatorAs
 type AttestationPublicKeyCredential = PublicKeyCredential[transportAuthenticatorAttestationResponse.AuthenticatorAttestationResponse]
 
 type PublicKeyCredential[T transportAuthenticatorAttestationResponse.AuthenticatorAttestationResponse | transportAuthenticatorAssertionResponse.AuthenticatorAssertionResponse] struct {
-	Id              transport.Base64URL `json:"id,omitempty"`
-	Type            string              `json:"type,omitempty"`
-	RawId           transport.Base64URL `json:"rawId,omitempty"`
-	Response        T                   `json:"response,omitempty"`
-	ClientExtension map[string]any      `json:"clientExtension,omitempty"`
+	Id              *transport.Base64URL `json:"id,omitempty"`
+	Type            string               `json:"type,omitempty"`
+	RawId           *transport.Base64URL `json:"rawId,omitempty"`
+	Response        T                    `json:"response,omitempty"`
+	ClientExtension map[string]any       `json:"clientExtension,omitempty"`
 }
 
 func MakeAttestationPublicKeyCredential(
@@ -37,9 +37,9 @@ func MakeAttestationPublicKeyCredential(
 	}
 
 	return &public_key_credential.AttestationPublicKeyCredential{
-		Id:              transportCredential.Id,
+		Id:              *transportCredential.Id,
 		Type:            transportCredential.Type,
-		RawId:           transportCredential.RawId,
+		RawId:           *transportCredential.RawId,
 		Response:        *authenticatorResponse,
 		ClientExtension: transportCredential.ClientExtension,
 	}, nil
@@ -62,9 +62,9 @@ func MakeAssertionPublicKeyCredential(
 	}
 
 	return &public_key_credential.AssertionPublicKeyCredential{
-		Id:              transportCredential.Id,
+		Id:              *transportCredential.Id,
 		Type:            transportCredential.Type,
-		RawId:           transportCredential.RawId,
+		RawId:           *transportCredential.RawId,
 		Response:        *authenticatorResponse,
 		ClientExtension: transportCredential.ClientExtension,
 	}, nil

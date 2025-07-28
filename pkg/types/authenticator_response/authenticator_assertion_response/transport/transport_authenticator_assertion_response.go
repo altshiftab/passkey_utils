@@ -11,25 +11,25 @@ import (
 	"github.com/altshiftab/passkey_utils/pkg/utils/transport"
 )
 
-// TODO: Add JSON schema notations.
-
 type AuthenticatorAssertionResponse struct {
-	ClientDataJson    transport.Base64URL `json:"clientDataJSON,omitempty"`
-	AuthenticatorData transport.Base64URL `json:"authenticatorData,omitempty"`
-	Signature         transport.Base64URL `json:"signature,omitempty"`
-	UserHandle        transport.Base64URL `json:"userHandle,omitempty"`
+	ClientDataJson    *transport.Base64URL `json:"clientDataJSON" required:"true" minLength:"1"`
+	AuthenticatorData *transport.Base64URL `json:"authenticatorData" required:"true" minLength:"1"`
+	Signature         *transport.Base64URL `json:"signature" required:"true" minLength:"1"`
+	UserHandle        *transport.Base64URL `json:"userHandle,omitempty" minLength:"1"`
+
+	_ struct{} `additionalProperties:"false"`
 }
 
 func (t AuthenticatorAssertionResponse) GetClientDataJson() []byte {
-	return t.ClientDataJson
+	return *t.ClientDataJson
 }
 
 func (t AuthenticatorAssertionResponse) GetAuthenticatorData() []byte {
-	return t.AuthenticatorData
+	return *t.AuthenticatorData
 }
 
 func (t AuthenticatorAssertionResponse) MakeAuthenticatorResponse() (*authenticator_assertion_response.AuthenticatorAssertionResponse, error) {
-	collectedClientData, err := transportCollectedClientData.FromBytes(t.ClientDataJson)
+	collectedClientData, err := transportCollectedClientData.FromBytes(*t.ClientDataJson)
 	if err != nil {
 		return nil, fmt.Errorf("transport collected client data from bytes: %w", err)
 	}
@@ -37,7 +37,7 @@ func (t AuthenticatorAssertionResponse) MakeAuthenticatorResponse() (*authentica
 		return nil, motmedelErrors.NewWithTrace(errors.ErrNilCollectedClientData)
 	}
 
-	authenticatorData, err := authenticator_data.FromBytes(t.AuthenticatorData)
+	authenticatorData, err := authenticator_data.FromBytes(*t.AuthenticatorData)
 	if err != nil {
 		return nil, fmt.Errorf("authenticator data from bytes: %w", err)
 	}
@@ -48,13 +48,13 @@ func (t AuthenticatorAssertionResponse) MakeAuthenticatorResponse() (*authentica
 	return &authenticator_assertion_response.AuthenticatorAssertionResponse{
 		ClientDataJson: collected_client_data.CollectedClientData{
 			Type:        collectedClientData.Type,
-			Challenge:   collectedClientData.Challenge,
+			Challenge:   *collectedClientData.Challenge,
 			Origin:      collectedClientData.Origin,
 			CrossOrigin: collectedClientData.CrossOrigin,
 			TopOrigin:   collectedClientData.TopOrigin,
 		},
 		AuthenticatorData: *authenticatorData,
-		Signature:         t.Signature,
-		UserHandle:        t.UserHandle,
+		Signature:         *t.Signature,
+		UserHandle:        *t.UserHandle,
 	}, nil
 }

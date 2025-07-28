@@ -6,7 +6,7 @@ import (
 )
 
 type PublicKeyCredentialRequestOptions struct {
-	Challenge          transport.Base64URL                                               `json:"challenge"`
+	Challenge          *transport.Base64URL                                               `json:"challenge"`
 	Timeout            uint64                                                            `json:"timeout,omitempty"`
 	RpId               string                                                            `json:"rpId,omitempty"`
 	AllowedCredentials []*public_key_credential_descriptor.PublicKeyCredentialDescriptor `json:"allowedCredentials,omitempty"`
