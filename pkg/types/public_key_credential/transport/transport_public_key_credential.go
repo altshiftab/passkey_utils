@@ -13,10 +13,10 @@ type AssertionPublicKeyCredential = PublicKeyCredential[transportAuthenticatorAs
 type AttestationPublicKeyCredential = PublicKeyCredential[transportAuthenticatorAttestationResponse.AuthenticatorAttestationResponse]
 
 type PublicKeyCredential[T transportAuthenticatorAttestationResponse.AuthenticatorAttestationResponse | transportAuthenticatorAssertionResponse.AuthenticatorAssertionResponse] struct {
-	Id              *transport.Base64URL `json:"id,omitempty"`
-	Type            string               `json:"type,omitempty"`
-	RawId           *transport.Base64URL `json:"rawId,omitempty"`
-	Response        T                    `json:"response,omitempty"`
+	Id              *transport.Base64URL `json:"id" required:"true" minLength:"1"`
+	Type            string               `json:"type" required:"true" minLength:"1"`
+	RawId           *transport.Base64URL `json:"rawId" required:"true" minLength:"1"`
+	Response        T                    `json:"response" required:"true" minLength:"1"`
 	ClientExtension map[string]any       `json:"clientExtension,omitempty"`
 }
 

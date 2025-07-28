@@ -8,11 +8,13 @@ import (
 )
 
 type CollectedClientData struct {
-	Type        string              `json:"type,omitempty"`
-	Challenge   *transport.Base64URL `json:"challenge,omitempty"`
-	Origin      string              `json:"origin,omitempty"`
-	CrossOrigin bool                `json:"crossOrigin,omitempty"`
-	TopOrigin   string              `json:"topOrigin,omitempty"`
+	Type        string               `json:"type" required:"true" minLength:"1"`
+	Challenge   *transport.Base64URL `json:"challenge" required:"true" minLength:"1"`
+	Origin      string               `json:"origin" required:"true" minLength:"1"`
+	CrossOrigin bool                 `json:"crossOrigin,omitempty"`
+	// NOTE: Not in spec.
+	TopOrigin string `json:"topOrigin,omitempty"`
+	// TODO: Add `TokenBinding`
 }
 
 func FromBytes(data []byte) (*CollectedClientData, error) {
