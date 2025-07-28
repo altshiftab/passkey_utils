@@ -24,6 +24,25 @@ const (
 	ExpectedCredentialType = "public-key"
 )
 
+var (
+	CommonBadRequestErrors = []error{
+		passkeyUtilsErrors.ErrCredentialTypeMismatch,
+		passkeyUtilsErrors.ErrCollectedClientDataTypeMismatch,
+		passkeyUtilsErrors.ErrChallengeMismatch,
+		passkeyUtilsErrors.ErrOriginMismatch,
+		passkeyUtilsErrors.ErrRpIdHashMismatch,
+		passkeyUtilsErrors.ErrUserNotPresent,
+		passkeyUtilsErrors.ErrUserNotVerified,
+		passkeyUtilsErrors.ErrUnexpectedSignatureCount,
+	}
+	AttestationBadRequestErrors = []error{
+		passkeyUtilsErrors.ErrPublicKeyAlgorithmMismatch,
+	}
+	AssertionBadRequestErrors = []error{
+		passkeyUtilsErrors.ErrSignatureVerifyFailure,
+	}
+)
+
 type authenticatorResponseTypes interface {
 	authenticator_response.AuthenticatorResponse
 	authenticator_attestation_response.AuthenticatorAttestationResponse | authenticator_assertion_response.AuthenticatorAssertionResponse
