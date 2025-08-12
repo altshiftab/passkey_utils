@@ -36,4 +36,7 @@ var (
 	ErrEmptyUserHandle = errors.New("empty user handle")
 	ErrSignatureVerifyFailure = errors.New("signature verify failure")
 	ErrEmptyRpIdHash = errors.New("empty rp id hash")
+	ErrNilRelayingParty = errors.New("nil relying party")
+	ErrEmptyRelayingPartyId = errors.New("empty relying party id")
+	ErrEmptyRelayingPartyName = errors.New("empty relying party name")
 )
