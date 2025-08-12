@@ -2,11 +2,13 @@ package validation
 
 import (
 	"bytes"
-	"crypto/ecdsa"
 	"crypto/sha256"
-	"encoding/asn1"
+	"errors"
 	"fmt"
+	motmedelCryptoErrors "github.com/Motmedel/utils_go/pkg/crypto/errors"
+	motmedelCrytoInterfaces "github.com/Motmedel/utils_go/pkg/crypto/interfaces"
 	motmedelErrors "github.com/Motmedel/utils_go/pkg/errors"
+	"github.com/Motmedel/utils_go/pkg/utils"
 	passkeyUtilsErrors "github.com/altshiftab/passkey_utils/pkg/errors"
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_data"
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response"
@@ -14,7 +16,6 @@ import (
 	"github.com/altshiftab/passkey_utils/pkg/types/authenticator_response/authenticator_attestation_response"
 	"github.com/altshiftab/passkey_utils/pkg/types/collected_client_data"
 	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential"
-	"math/big"
 	"slices"
 )
 
@@ -230,7 +231,7 @@ func ValidateAttestationPublicKeyCredential(
 	return nil
 }
 
-func ValidateEcdsaAssertionPublicKeyCredential(
+func ValidateAssertionPublicKeyCredential(
 	credential *public_key_credential.AssertionPublicKeyCredential,
 	rawClientDataJson []byte,
 	rawAuthenticatorData []byte,
@@ -238,7 +239,7 @@ func ValidateEcdsaAssertionPublicKeyCredential(
 	expectedCollectedClientDataOrigin string,
 	expectedRpId string,
 	previousSignatureCount uint32,
-	storedPublicKey *ecdsa.PublicKey,
+	verifier motmedelCrytoInterfaces.Verifier,
 ) error {
 	if len(expectedCollectedClientDataChallenge) == 0 {
 		return motmedelErrors.NewWithTrace(passkeyUtilsErrors.ErrEmptyChallenge)
@@ -252,8 +253,8 @@ func ValidateEcdsaAssertionPublicKeyCredential(
 		return motmedelErrors.NewWithTrace(passkeyUtilsErrors.ErrEmptyExpectedRpId)
 	}
 
-	if storedPublicKey == nil {
-		return motmedelErrors.NewWithTrace(passkeyUtilsErrors.ErrNilStoredPublicKey)
+	if utils.IsNil(verifier) {
+		return motmedelErrors.NewWithTrace(motmedelCryptoErrors.ErrNilVerifier)
 	}
 
 	if credential == nil {
@@ -312,35 +313,22 @@ func ValidateEcdsaAssertionPublicKeyCredential(
 		)
 	}
 
-	var ecdsaSig struct {
-		R, S *big.Int
-	}
-
-	_, err = asn1.Unmarshal(signature, &ecdsaSig)
-	if err != nil {
-		return motmedelErrors.New(
-			fmt.Errorf(
-				"%w (signature): asn1 unmarshal %w",
-				motmedelErrors.ErrValidationError,
-				err,
-			),
-			signature,
-		)
-	}
-
 	clientDataJsonHash := sha256.Sum256(rawClientDataJson)
-	signedDataHash := sha256.Sum256(bytes.Join([][]byte{rawAuthenticatorData, clientDataJsonHash[:]}, nil))
+	message := bytes.Join([][]byte{rawAuthenticatorData, clientDataJsonHash[:]}, nil)
 
-	if ok := ecdsa.Verify(storedPublicKey, signedDataHash[:], ecdsaSig.R, ecdsaSig.S); !ok {
-		return motmedelErrors.New(
-			fmt.Errorf(
-				"%w: %w",
-				motmedelErrors.ErrValidationError,
-				passkeyUtilsErrors.ErrSignatureVerifyFailure,
-			),
-			signedDataHash,
-			ecdsaSig,
-		)
+	err = verifier.Verify(message, signature)
+	if err != nil {
+		if errors.Is(err, motmedelCryptoErrors.ErrSignatureMismatch) {
+			return motmedelErrors.New(
+				fmt.Errorf(
+					"%w: %w",
+					motmedelErrors.ErrVerificationError,
+					passkeyUtilsErrors.ErrSignatureVerifyFailure,
+				),
+				message,
+				signature,
+			)
+		}
 	}
 
 	return nil
