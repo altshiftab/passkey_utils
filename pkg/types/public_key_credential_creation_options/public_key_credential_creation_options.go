@@ -1,6 +1,7 @@
 package public_key_credential_creation_options
 
 import (
+	"encoding/json"
 	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential_descriptor"
 	"github.com/altshiftab/passkey_utils/pkg/types/public_key_credential_entity/public_key_credential_user_entity"
 )
@@ -31,6 +32,23 @@ type PublicKeyCredentialParam struct {
 
 type AuthenticatorSelection struct {
 	AuthenticatorAttachment string `json:"authenticatorAttachment,omitempty"`
-	ResidentKeyPreference   string `json:"residentKey,omitempty"`
+	ResidentKey             string `json:"residentKey,omitempty"`
 	RequireResidentKey      bool   `json:"requireResidentKey,omitempty"`
+}
+
+func (a *AuthenticatorSelection) MarshalJSON() ([]byte, error) {
+	type Alias AuthenticatorSelection
+	aux := &struct {
+		*Alias
+	}{
+		Alias: (*Alias)(a),
+	}
+
+	if a.ResidentKey == "required" {
+		aux.RequireResidentKey = true
+	} else {
+		aux.RequireResidentKey = false
+	}
+
+	return json.Marshal(aux)
 }

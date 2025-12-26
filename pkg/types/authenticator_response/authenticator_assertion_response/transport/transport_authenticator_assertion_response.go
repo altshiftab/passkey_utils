@@ -16,7 +16,7 @@ type AuthenticatorAssertionResponse struct {
 	AuthenticatorData *transport.Base64URL `json:"authenticatorData" required:"true" minLength:"1"`
 	Signature         *transport.Base64URL `json:"signature" required:"true" minLength:"1"`
 	// NOTE: Not required in spec, but I don't see why it mustn't be.
-	UserHandle        *transport.Base64URL `json:"userHandle,omitempty" required:"true" minLength:"1"`
+	UserHandle *transport.Base64URL `json:"userHandle,omitempty" required:"true" minLength:"1"`
 
 	_ struct{} `additionalProperties:"false"`
 }

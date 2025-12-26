@@ -1,8 +1,8 @@
 package public_key_credential_user_entity
 
 type PublicKeyCredentialUserEntity struct {
-	Name string `json:"name"`
-	Id   []byte `json:"id"`
+	Name        string `json:"name"`
+	Id          []byte `json:"id"`
 	DisplayName string `json:"displayName"`
 }
 
