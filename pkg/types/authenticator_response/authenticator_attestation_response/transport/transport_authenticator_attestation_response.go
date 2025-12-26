@@ -12,10 +12,10 @@ import (
 )
 
 type AuthenticatorAttestationResponse struct {
-	ClientDataJson     *transport.Base64URL `json:"clientDataJSON" required:"true" minLength:"1"`
-	Transports         []string             `json:"transports" required:"true" minLength:"1"`
-	AuthenticatorData  *transport.Base64URL `json:"authenticatorData" required:"true" minLength:"1"`
-	AttestationObject  *transport.Base64URL `json:"attestationObject" required:"true" minLength:"1"`
+	ClientDataJson    *transport.Base64URL `json:"clientDataJSON" required:"true" minLength:"1"`
+	Transports        []string             `json:"transports" required:"true" minLength:"1"`
+	AuthenticatorData *transport.Base64URL `json:"authenticatorData" required:"true" minLength:"1"`
+	AttestationObject *transport.Base64URL `json:"attestationObject" required:"true" minLength:"1"`
 	// NOTE: Not required according to spec, but I don't see why it mustn't be.
 	PublicKey          *transport.Base64URL `json:"publicKey,omitempty" required:"true" minLength:"1"`
 	PublicKeyAlgorithm int                  `json:"publicKeyAlgorithm" required:"true"`
